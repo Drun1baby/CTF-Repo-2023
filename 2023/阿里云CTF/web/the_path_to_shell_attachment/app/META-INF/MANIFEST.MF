@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Spring-Boot-Classpath-Index: WEB-INF/classpath.idx
+Implementation-Title: app
+Implementation-Version: 1.0-SNAPSHOT
+Spring-Boot-Layers-Index: WEB-INF/layers.idx
+Start-Class: org.ctf.Application
+Spring-Boot-Classes: WEB-INF/classes/
+Spring-Boot-Lib: WEB-INF/lib/
+Build-Jdk-Spec: 1.8
+Spring-Boot-Version: 2.7.8
+Created-By: Maven WAR Plugin 3.3.2
+Main-Class: org.springframework.boot.loader.WarLauncher
+

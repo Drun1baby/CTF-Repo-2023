@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>搜索页_{$eyou.field.keywords}_{eyou:global name="web_name" /}</title>
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<link href="{eyou:global name='web_ico' /}" rel="shortcut icon" type="image/x-icon" />
+{eyou:static file="skin/style/pintuer.css" /}
+{eyou:static file="skin/style/header.css" /}
+{eyou:static file="skin/style/style.css" /}
+{eyou:static file="skin/Lib/font-awesome/css/font-awesome.min.css" /}
+<!--[if lt IE 9]>{eyou:static file="skin/js/respond.js" /} <![endif]-->
+</head>
+<body>
+{eyou:include file="header.htm" /}
+<div class="layout bg-gray">
+	<div class="container">
+		<div class="line">
+			<div class="padding-big-top padding-big-bottom height">
+				搜索结果：<span class="text-yellow">{$eyou.field.keywords}</span>相关的内容
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="line">
+			<div class="xl12 xs12 xm12 bm12">
+				<ul class="normal-list text-left">
+					{eyou:list titlelen='60' pagesize='20'}
+					<li class="dot">
+						<a href="{$field.arcurl}" title="{$field.title}">【{$field.typename}】{$field.title}</a>
+						<span>{$field.update_time|MyDate='Y-m-d',###}</span>
+					</li>
+					{/eyou:list}
+				</ul>
+			</div>
+			<!-- 分页 -->
+			<div class="xl12 xs12 xm12 bm12 text-center">
+				<div class="blank-small"></div>
+				<ul class="pagination">
+				   {eyou:pagelist listitem='pre,pageno,next' listsize='9' /}
+				</ul>
+				<div class="blank-large"></div>
+			</div>
+			<!-- 分页 -->			
+		</div>
+	</div>
+</div>
+{eyou:include file="footer.htm" /}
+{eyou:static file="skin/js/pintuer.js" /}
+{eyou:static file="skin/js/common.js" /}
+</body>
+</html>

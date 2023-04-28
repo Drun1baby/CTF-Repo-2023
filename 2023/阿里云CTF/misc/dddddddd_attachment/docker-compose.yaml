@@ -1,0 +1,15 @@
+version: '3.9'
+services:
+  dddddddd:
+    build: "."
+    image: ghcr.io/pizzatql/aliyunctf-dddddddd:latest
+    ports:
+      - "1337:5000/tcp"
+    privileged: true
+    read_only: true
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: $PWD/flag
+        target: /srv/flag
+        read_only: true

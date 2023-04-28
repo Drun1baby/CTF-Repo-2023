@@ -1,0 +1,37 @@
+<div class="col-md-10 mx-auto">
+    <div class="card border-primary bg-light mb-4 rounded-3">
+        <%- include('../partials/nav') %>
+        <div class="card-body">
+            <div class="row justify-content-start">
+                <h3>
+                    <%= title %>
+                </h3>
+                <div></div>
+                <div>
+                    <%= content %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card border-primary bg-light mb-4 rounded-3">
+        <div class="card-body">
+            <div class="row justify-content-start">
+                <form method="post">
+                    Do you like this post? Please rate this article
+                    <select name="score">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <input type=hidden name=_auth value=<%= auth_token %>>
+                    <input type=submit class="btn btn-sm btn-success" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

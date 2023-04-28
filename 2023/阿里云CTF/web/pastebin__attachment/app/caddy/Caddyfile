@@ -1,0 +1,23 @@
+{
+    order cache before rewrite
+    cache {
+        key {
+            headers Cookie
+        }
+        regex {
+            exclude ^/$
+            exclude ^/admin/purge$
+        }
+    }
+    admin off
+}
+
+:4000 {
+    cache {
+        allowed_http_verbs GET
+        redis {
+            url 127.0.0.1:6379
+        }
+    }
+    reverse_proxy localhost:3000
+}

@@ -1,0 +1,16 @@
+[
+    {
+        "name": "login",
+        "value": "0",
+        "domain": "web",
+        "path": "/",
+        "expires": -1,
+        "size": 9,
+        "httpOnly": true,
+        "secure": false,
+        "session": false,
+        "sameParty": false,
+        "sourceScheme": "NonSecure",
+        "sourcePort": 4000
+    }
+]

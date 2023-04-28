@@ -1,0 +1,267 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>积分商城-{eyou:global name='web_name' /}</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <link href="{eyou:global name='web_cmspath'/}/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    {eyou:static file="users/skin/css/bootstrap.min.css"/}
+    {eyou:static file="users/skin/css/basic.css"/}
+    {eyou:static file="users/skin/css/eyoucms.css"/}
+    {eyou:static file="users/skin/css/shop.css"/}
+    {eyou:static  file="users/skin/css/tb_style.css"/}
+    <!-- 新样式 2020-11-25 -->
+    {eyou:static file="users/skin/css/element/index.css" /}
+    {eyou:static file="users/skin/css/e-user.css" /}
+    {eyou:include file="users/skin/css/diy_css.htm"/}
+
+    {eyou:static file="/public/static/common/js/jquery.min.js"/}
+    {eyou:static file="/public/plugins/layer-v3.1.0/layer.js"/}
+    {eyou:static file="/public/static/common/js/tag_global.js"/}
+</head>
+
+<body class="centre shop">
+<!-- 头部信息 -->
+<div class="ey-header-status">
+	<div class="header-status-l">
+		<a href="javascript:history.go(-1)"><i class="el-icon-arrow-left"></i></a>
+	</div>
+	<div class="header-status-m">积分商城</div>
+	<div class="header-status-r">
+		<a href="{eyou:url link='user/Users/index' /}"><i class="el-icon-user"></i></a>
+	</div>
+</div>
+<!-- 头部信息结束 -->
+<div class="h50"></div>
+
+
+<div class="ey-container">
+    <div class="ey-con mb10 mt10">
+        <div class="ey-row">
+            <div class="el-col-24 oper-row mb15" >
+                <!-- 导航栏 -->
+                <div class="el-button-group z_roll">
+                    <a class="el-button el-button--default el-button--small active" id="a_changeGift1" onclick="changeGift(1);">
+                        全部商品
+                    </a>
+                    <a class="el-button el-button--default el-button--small" id="a_changeGift2" onclick="changeGift(2);">
+                        兑换记录
+                    </a>
+                </div>
+                <!-- 导航栏结束 -->
+            </div>
+        </div>
+    </div>
+	<div class="ey-con">
+		<div class="ey-row tab_cont">
+			<!-- 中部 -->
+			<div class="pro-list">
+				<ul>
+					{eyou:volist name="$list" id="vo" key="k"}
+				    <li>
+				        <div class="diva">
+				            <div class="tit">
+				                <a class="tit-l ico-hymb fl" style="cursor: pointer;" href="{:url('user/Memgift/users_gift_detail',['gift_id'=>$vo.gift_id])}">
+									<img src="{$vo.litpic}">
+
+								</a>
+								<div class="tit-r fl">
+									<a class="" style="cursor: pointer;" href="{:url('user/Memgift/users_gift_detail',['gift_id'=>$vo.gift_id])}"><h2>{$vo.giftname}</h2></a>
+									<p>{$vo.score}{$score_name}</p>
+									{eyou:if condition='$users.scores >= $vo.score'}
+									<p>
+										{eq name='$vo.type' value='-1'}
+										<a href="javascript:void(0)" class="okgo" data-url="{:url('user/Memgift/users_gift_shiwu',['gift_id'=>$vo.gift_id])}" onclick="jumpInfo(this)">立即兑换</a>
+										{else/}
+										<a href="javascript:void(0)" class="okgo" data-url="{:url('user/Memgift/users_gift_vip',['gift_id'=>$vo.gift_id])}" onclick="jumpVip(this)">立即兑换</a>
+										{/eq}
+									</p>
+									{eyou:else /}
+									<p><a class="okgo nones">{$score_name}不足</a></p>
+									{/eyou:if}
+								</div>
+				            </div>
+				        </div>
+				    </li>
+					{/eyou:volist}
+				</ul>
+			</div>
+
+            <div class="order-list" style="display: none;">
+            	<table style="width:100%;">
+            		<tbody>
+					{eyou:empty name="$order_list"}
+            		<tr>
+            			<td valign="top" colspan="50">
+                            <div class="cell pt50 pb50 tc">
+                               <span class="mb10"><img id='litpic_img'  src="__PUBLIC__/static/common/images/null-data.png"/></span>
+                             </div>
+                        </td>
+            		</tr>
+					{eyou:else/}
+						{eyou:volist name="$order_list" id="vo" }
+							<tr>
+								<td style="width: 70px;">
+									<div class="list_z mr10">
+										<img class="pic" src="{$vo.litpic}">
+									</div>
+								</td>
+								<td>
+									<a href="">
+										<div class="list_z">{$vo.giftname}</div>
+										<div class="list_z">
+											<span class="e_ty">{$vo.score}{$score_name}{eyou:if condition="$vo.status eq 2"}[{$score_name}已返还]{/eyou:if}</span>
+											<span class="e_ty">{$vo.add_time|MyDate="Y-m-d H:i",###}</span>
+										</div>
+									</a>
+								</td>
+								<td>
+									<div class="list_z tc">
+										{eyou:if condition="$vo.status eq 1"}
+										<span style="color: #67c23a">已发货</span>
+										{elseif condition="$vo.status eq 2"}
+										<span style="color: #F00">发货取消</span>
+										{else /}
+										<span style="color: #333">待发货</span>
+										{/eyou:if}
+									</div>
+								</td>
+							</tr>
+                            <tr style="height: 10px;"></tr>
+						{/eyou:volist}
+					{/eyou:empty}
+
+					</tbody>
+            	</table>
+            </div>
+
+		</div>
+	</div>
+</div>
+<script>
+	function changeGift(n) {
+		if (1 == n){
+		    $('#a_changeGift1').addClass('active');
+		    $('#a_changeGift2').removeClass('active');
+		    $('.pro-list').show();
+		    $('.order-list').hide();
+		} else{
+            $('#a_changeGift2').addClass('active');
+            $('#a_changeGift1').removeClass('active');
+            $('.pro-list').hide();
+            $('.order-list').show();
+		}
+    }
+    //兑换实物
+    function jumpInfo(obj){
+        var url = $(obj).data('url');
+        var index = layer.open({
+            type: 2,
+            id: 'iframe_goinfo',
+            title: '填写快递信息',
+            fixed: true, //不固定
+            shadeClose: false,
+            shade: [0.3,'#000'],
+            maxmin: false, //开启最大化最小化按钮
+            closeBtn: 1,
+            area: ['90%','288px'],
+            content: url
+        });
+    }
+    //打开详情页
+    function goDetail(obj) {
+        //iframe窗
+        var url = $(obj).data('url');
+        var index = layer.open({
+            type: 2,
+            id: 'iframe_goDetail',
+            title: '商品详情',
+            fixed: true, //不固定
+            shadeClose: false,
+            shade: [0.3, '#000'],
+            maxmin: false, //开启最大化最小化按钮
+            closeBtn: 1,
+            area: ['700px', '99%'],
+            content: url,
+        });
+    }
+    //兑换会员
+    function jumpVip(obj) {
+        var url = $(obj).data('url');
+        layer.confirm('确定要兑换商品？', {
+            title: false,
+            closeBtn: false
+        }, function() {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'JSON',
+                data: {
+                    long: 0
+                },
+                success: function(res) {
+                    if (1 == res.code) {
+                        layer.msg(res.msg, {
+                            icon: 1,
+                            time: 1000
+                        }, function() {
+                            window.location.reload();
+                        });
+                    } else if (res.code == 2) {
+                        layer.confirm(res.msg, {
+                            btn: ['继续兑换', '取消'] //按钮
+                        }, function() {
+                            $.ajax({
+                                url: url,
+                                type: 'POST',
+                                dataType: 'JSON',
+                                data: {
+                                    long: 1
+                                },
+                                success: function(res) {
+                                    if (1 == res.code) {
+                                        layer.msg(res.msg, {
+                                            icon: 1,
+                                            time: 1000
+                                        }, function() {
+                                            window.location.reload();
+                                        });
+                                    } else {
+                                        layer.msg(res.msg, {
+                                            icon: 2,
+                                            time: 2000
+                                        });
+                                    }
+                                },
+                                error: function(e) {
+                                    layer.closeAll();
+                                    layer.alert(e.responseText, {
+                                        icon: 5,
+                                        title: false
+                                    });
+                                }
+                            })
+                        });
+                    } else {
+                        layer.msg(res.msg, {
+                            icon: 2,
+                            time: 2000
+                        });
+                    }
+                },
+                error: function(e) {
+                    layer.closeAll();
+                    layer.alert(e.responseText, {
+                        icon: 5,
+                        title: false
+                    });
+                }
+            })
+        }, function(index) {
+            layer.closeAll(index);
+        });
+    }
+</script>
+<!-- END -->

@@ -1,0 +1,104 @@
+<footer class="bg-main">
+	<div class="container-layout">
+		<ul>
+			{eyou:channel type="top" row="4" id="field"}
+			<li class="float-left item-{$i} hidden-l hidden-s">
+				<h3 class="text-middle margin-big-bottom">{$field.typename}</h3>
+				<ul>
+					{eyou:channel name="$field.children" row="100" id="field2"}
+					<li><a href="{$field2.typeurl}" title="{$field2.typename}">{$field2.typename}</a></li>
+					{/eyou:channel}
+				</ul>
+			</li>
+			 {/eyou:channel}
+			
+			<li class="float-left item-5">
+				{eyou:type typeid='54'}
+				<h3 class="text-middle margin-big-bottom">{$field.typename}</h3>
+				{/eyou:type}
+				<div class="contact">
+					<div class="media media-x margin-big-bottom">
+						<span class="float-left radius-circle bg-yellow text-white text-center">
+							<i class="fa fa-map-marker fa-fw" aria-hidden="true"></i>
+						</span>
+						<div class="media-body">
+							<p>{eyou:global name='web_attr_16' /}<p>
+						</div>
+					</div>				
+					
+					<div class="media media-x margin-big-bottom">
+						<span class="float-left radius-circle bg-yellow text-white text-center">
+							<i class="fa-fw fa fa-phone"></i>
+						</span>
+						<div class="media-body">
+							<p>
+								<a href="tel:{eyou:global name='web_attr_1' /}" class="Conv_DINCondensedC text-large">{eyou:global name='web_attr_1' /}</a>
+							<p>
+						</div>
+					</div>
+					<div class="media media-x margin-big-bottom">
+						<span class="float-left radius-circle bg-yellow text-white text-center">
+							<i class="fa fa-envelope fa-fw"></i>
+						</span>
+						<div class="media-body">
+							<p>
+								<a href="mailto:{eyou:global name='web_attr_15' /}" class="text-middle">{eyou:global name='web_attr_15' /}</a>
+							</p>
+						</div>
+					</div>
+
+				</div>
+			</li>
+			<li class="float-left item-6">
+				<div class="qr padding radius text-center"><img src="{eyou:global name='web_attr_17' /}"><p class="text-gray height-middle">关注我们</p></div>
+			</li>
+		</ul>
+	</div>
+	<div class="blank-middle"></div>
+	<!-- 友情链接 -->
+	<div class="container-layout">
+		<div class="line">	
+			<div class="tab">
+				<div class="tab-head">
+					<ul class="tab-nav">
+						<li class="active"><a href="#friend-1">友情链接</a></li>
+						<!-- <li><a href="#friend-2">友情链接-图片</a> </li> -->
+					</ul>
+				</div>
+				<div class="tab-body">
+					<div class="tab-panel active flink" id="friend-1">
+						{eyou:flink titlelen='45' type='text'}
+							<a href="{$field.url}" {$field.target}>{$field.title} </a>
+						{/eyou:flink}
+						<a href="{eyou:Diyurl type='tags' /}">Tag标签大全</a>
+					</div>
+					<!-- <div class="tab-panel flink" id="friend-2">
+						{eyou:flink titlelen='45' type='image'}
+							<a href="{$field.url}" {$field.target}><img src="{$field.logo}"> </a>
+						{/eyou:flink}
+					</div> -->
+
+				</div>
+			</div>	
+		</div>	
+	</div>	
+	<!-- 友情链接 end -->
+
+	<div class="container-layout">
+		<div class="line">
+			<div class="copyright height">
+				<div class="x8">
+					{eyou:global name='web_copyright' /}　{eyou:global name='web_recordnum' /}
+				</div>
+				<div class="x4 text-right">
+					<a href="{eyou:global name='web_basehost' /}/sitemap.xml">SiteMap</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<!--底部版权-->
+
+<!-- 应用插件标签 start --> 
+{eyou:weapp type='default' /} 
+<!-- 应用插件标签 end -->

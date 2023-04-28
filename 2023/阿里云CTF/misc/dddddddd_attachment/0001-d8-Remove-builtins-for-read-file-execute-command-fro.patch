@@ -1,0 +1,95 @@
+From e3f75a2e00b17fadd909bb8dcd61f914980eceba Mon Sep 17 00:00:00 2001
+From: Past CTF Organizers <devnull@pwnable.ai>
+Date: Fri, 27 Jan 2023 03:30:28 +0800
+Subject: [PATCH 1/2] [d8] Remove builtins for read file / execute command from
+ d8
+
+---
+ src/d8/d8.cc | 37 -------------------------------------
+ src/d8/d8.h  |  1 -
+ 2 files changed, 38 deletions(-)
+
+diff --git a/src/d8/d8.cc b/src/d8/d8.cc
+index ad36c7ac1f8..88d69ee7548 100644
+--- a/src/d8/d8.cc
++++ b/src/d8/d8.cc
+@@ -3288,18 +3288,6 @@ Local<ObjectTemplate> Shell::CreateGlobalTemplate(Isolate* isolate) {
+                        FunctionTemplate::New(isolate, PrintErr));
+   global_template->Set(isolate, "write",
+                        FunctionTemplate::New(isolate, WriteStdout));
+-  if (!i::v8_flags.fuzzing) {
+-    global_template->Set(isolate, "writeFile",
+-                         FunctionTemplate::New(isolate, WriteFile));
+-  }
+-  global_template->Set(isolate, "read",
+-                       FunctionTemplate::New(isolate, ReadFile));
+-  global_template->Set(isolate, "readbuffer",
+-                       FunctionTemplate::New(isolate, ReadBuffer));
+-  global_template->Set(isolate, "readline",
+-                       FunctionTemplate::New(isolate, ReadLine));
+-  global_template->Set(isolate, "load",
+-                       FunctionTemplate::New(isolate, ExecuteFile));
+   global_template->Set(isolate, "setTimeout",
+                        FunctionTemplate::New(isolate, SetTimeout));
+   // Some Emscripten-generated code tries to call 'quit', which in turn would
+@@ -3315,10 +3303,6 @@ Local<ObjectTemplate> Shell::CreateGlobalTemplate(Isolate* isolate) {
+                        Shell::CreatePerformanceTemplate(isolate));
+   global_template->Set(isolate, "Worker", Shell::CreateWorkerTemplate(isolate));
+ 
+-  // Prevent fuzzers from creating side effects.
+-  if (!i::v8_flags.fuzzing) {
+-    global_template->Set(isolate, "os", Shell::CreateOSTemplate(isolate));
+-  }
+   global_template->Set(isolate, "d8", Shell::CreateD8Template(isolate));
+ 
+ #ifdef V8_FUZZILLI
+@@ -3348,19 +3332,6 @@ Local<ObjectTemplate> Shell::CreateGlobalTemplate(Isolate* isolate) {
+   return global_template;
+ }
+ 
+-Local<ObjectTemplate> Shell::CreateOSTemplate(Isolate* isolate) {
+-  Local<ObjectTemplate> os_template = ObjectTemplate::New(isolate);
+-  AddOSMethods(isolate, os_template);
+-  os_template->Set(isolate, "name",
+-                   v8::String::NewFromUtf8Literal(isolate, V8_TARGET_OS_STRING),
+-                   PropertyAttribute::ReadOnly);
+-  os_template->Set(
+-      isolate, "d8Path",
+-      v8::String::NewFromUtf8(isolate, options.d8_path).ToLocalChecked(),
+-      PropertyAttribute::ReadOnly);
+-  return os_template;
+-}
+-
+ Local<FunctionTemplate> Shell::CreateWorkerTemplate(Isolate* isolate) {
+   Local<FunctionTemplate> worker_fun_template =
+       FunctionTemplate::New(isolate, WorkerNew);
+@@ -3460,14 +3431,6 @@ Local<ObjectTemplate> Shell::CreateRealmTemplate(Isolate* isolate) {
+ 
+ Local<ObjectTemplate> Shell::CreateD8Template(Isolate* isolate) {
+   Local<ObjectTemplate> d8_template = ObjectTemplate::New(isolate);
+-  {
+-    Local<ObjectTemplate> file_template = ObjectTemplate::New(isolate);
+-    file_template->Set(isolate, "read",
+-                       FunctionTemplate::New(isolate, Shell::ReadFile));
+-    file_template->Set(isolate, "execute",
+-                       FunctionTemplate::New(isolate, Shell::ExecuteFile));
+-    d8_template->Set(isolate, "file", file_template);
+-  }
+   {
+     Local<ObjectTemplate> log_template = ObjectTemplate::New(isolate);
+     log_template->Set(isolate, "getAndStop",
+diff --git a/src/d8/d8.h b/src/d8/d8.h
+index d214c0c17e4..5c9d866f311 100644
+--- a/src/d8/d8.h
++++ b/src/d8/d8.h
+@@ -767,7 +767,6 @@ class Shell : public i::AllStatic {
+   static Local<FunctionTemplate> CreateNodeTemplates(
+       Isolate* isolate, Local<FunctionTemplate> event_target);
+   static Local<ObjectTemplate> CreateGlobalTemplate(Isolate* isolate);
+-  static Local<ObjectTemplate> CreateOSTemplate(Isolate* isolate);
+   static Local<FunctionTemplate> CreateWorkerTemplate(Isolate* isolate);
+   static Local<ObjectTemplate> CreateAsyncHookTemplate(Isolate* isolate);
+   static Local<ObjectTemplate> CreateTestRunnerTemplate(Isolate* isolate);
+-- 
+2.39.2
+

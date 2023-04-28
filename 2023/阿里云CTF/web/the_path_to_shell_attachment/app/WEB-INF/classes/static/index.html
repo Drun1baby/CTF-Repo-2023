@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/bulma.min.css">
+    <link rel="stylesheet" href="./css/custom.css">
+    <script src="./js/vue.min.js"></script>
+    <script src="./js/axios.min.js"></script>
+    <title>Get User Info</title>
+</head>
+<body>
+
+<div id="app">
+    <section class="section columns">
+        <div class="container column is-5">
+            <h1 class="title">Name</h1>
+            <div class="field">
+                <div class="control">
+                    <textarea class="textarea" v-model="name"></textarea>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <a class="button is-link" v-on:click="request">Submit</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section columns">
+        <div class="container column is-5">
+            <h1 class="title">Result</h1>
+            <div class="box" v-html="result"></div>
+        </div>
+    </section>
+</div>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            name: '',
+            result: ''
+        },
+        methods: {
+            request: function(event) {
+                var vm = this
+                axios.get('./user/' + encodeURIComponent(vm.name))
+                    .then(function (response) {
+                        console.log(response)
+                        vm.result = response.data
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                        vm.result = error
+                    })
+            }
+        }
+    })
+</script>
+
+</body>
+</html>
