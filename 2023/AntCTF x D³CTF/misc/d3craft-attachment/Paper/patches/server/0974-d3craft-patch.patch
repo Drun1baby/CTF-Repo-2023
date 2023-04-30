@@ -1,0 +1,22 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: WingsZeng <wings.xiangyi.zeng@gmail.com>
+Date: Thu, 6 Apr 2023 11:22:18 +0800
+Subject: [PATCH] d3craft-patch
+
+
+diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+index 177aac1ab10189bb5a52217e86ba5c8a535b4197..132494836fbb98f6676c3111c95c36b6826ccf0d 100644
+--- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
++++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+@@ -1478,7 +1478,10 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+                                 if (d11 - d10 > Math.max(f2, Math.pow((double) (org.spigotmc.SpigotConfig.movedTooQuicklyMultiplier * (float) i * speed), 2)) && !this.isSingleplayerOwner()) {
+                                 // CraftBukkit end
+                                     ServerGamePacketListenerImpl.LOGGER.warn("{} moved too quickly! {},{},{}", new Object[]{this.player.getName().getString(), d7, d8, d9});
+-                                    this.teleport(this.player.getX(), this.player.getY(), this.player.getZ(), this.player.getYRot(), this.player.getXRot());
++                                    // d3craft start
++                                    // this.teleport(this.player.getX(), this.player.getY(), this.player.getZ(), this.player.getYRot(), this.player.getXRot());
++                                    this.internalTeleport(this.lastPosX, this.lastPosY, this.lastPosZ, this.lastYaw, this.lastPitch, Collections.emptySet());
++                                    // d3craft end
+                                     return;
+                                 }
+                             }
